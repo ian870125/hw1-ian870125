@@ -1,14 +1,23 @@
 args = commandArgs(trailingOnly=TRUE)
 
-df1=read.csv(paste("example",args[2],sep="\\"))
-
-hw1=matrix(nrow=1,ncol=3)
-hw1[1,1]=args[2]
-for (i in 2:3){
-  a<-round(max(df1[,i]),2)
-  hw1[1,i]=a
+if(c("--input"%in%args & "--output"%in%args)==FALSE){
+  stop("missing input or output")
+} else if (args[1]=="--input"){
+  df1=read.csv(args[2])
+  a=args[2]
+}else if(args[1]=="--output"){
+  df1=read.csv(args[4])
+  a=args[4]
 }
-colnames(hw1)=c("set","weight","height")
+w=round(max(df1$weight),2)
+h=round(max(df1$height),2)
+hw1=matrix(c(a,w,h),nrow=1,ncol=3)
 
-write.csv(hw1,args[4])
+colnames(hw1)=c("set","weight","height")
+if(args[1]=="--input"){
+  write.csv(hw1,args[4])
+}else if(args[1]=="--output"){
+  write.csv(hw1,args[2])
+}
+
                                                                                                                                                                           
